@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using PublicVariables;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,27 +10,22 @@ public class Dice_Sc : MonoBehaviour, IClickable
     private Controller_Sc controller;
 
     [SerializeField]
-    private GameObject upFace;
-    [SerializeField]
-    private GameObject downFace;
-    [SerializeField]
-    private GameObject frontFace;
-    [SerializeField]
-    private GameObject backFace;
-    [SerializeField]
-    private GameObject rightFace;
-    [SerializeField]
-    private GameObject leftFace;
-
-    [SerializeField]
     private List<GameObject> faces;
     private GameObject topFace;
+
+    private ISlot slot;
 
 
     public void OnClick(Controller_Sc c)
     {
         controller = controller != null ? controller : c;
         GiveRollForce();
+    }
+
+    public void PickedUp()
+    {
+        slot?.TakeFromSlot();
+        slot = null;
     }
 
     IEnumerator DiceMoving()
@@ -52,6 +48,11 @@ public class Dice_Sc : MonoBehaviour, IClickable
         StartCoroutine(DiceMoving());
     }
 
+    public void SetSlot(ISlot s)
+    {
+        slot = s;
+    }
+
     void SetTopFace()
     {
         float delta = 0;
@@ -64,6 +65,12 @@ public class Dice_Sc : MonoBehaviour, IClickable
                 delta = d;
             }
         }
+    }
+
+    public FaceType GetTopFaceType()
+    {
+        if (topFace == null) { SetTopFace(); }
+        return topFace.GetComponent<Face_Sc>().GetFaceType();
     }
 
 }

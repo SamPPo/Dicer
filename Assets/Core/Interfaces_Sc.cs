@@ -1,9 +1,18 @@
+using PublicVariables;
 using UnityEngine;
 
 
 public interface IClickable
 {
     void OnClick(Controller_Sc c);
+}
+
+public interface ISlot
+{
+    void FillSlot();
+    void TakeFromSlot();
+    bool GetIsFilled();
+    FaceType GetFaceType();
 }
 
 public class Interfaces_Sc : MonoBehaviour
